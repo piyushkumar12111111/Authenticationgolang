@@ -6,5 +6,5 @@ import "time"
 type EmploymentReport struct {
 	ID      string `json:"id"`
 	Content string `json:"content"`
-	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedAt time.Time  `json:"updated_at "` 
 }
