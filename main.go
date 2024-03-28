@@ -27,6 +27,12 @@ func main() {
 	r.HandleFunc("/reports/{id}", handlers.UpdateReport).Methods("PUT")
 	r.HandleFunc("/reports/{id}", handlers.DeleteReport).Methods("DELETE")
 
+
+	//! retriving all reports
+
+	r.HandleFunc("/reports", handlers.GetAllReports).Methods("GET")
+
+
 	log.Println("Server starting on :8080...")
 	http.ListenAndServe(":8080", r)
 }
