@@ -7,7 +7,7 @@ import (
     "github.com/dgrijalva/jwt-go"
 )
 
-// Authenticate is a middleware that checks for a valid JWT token
+
 func Authenticate(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         c, err := r.Cookie("token")
