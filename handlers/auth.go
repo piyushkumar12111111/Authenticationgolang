@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/mux"
 	"github.com/piyushkumar/authenticationmayursir/models"
 )
 
@@ -85,4 +86,25 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+//! delete 
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+   
+    vars := mux.Vars(r)
+    username := vars["username"]
+
+    
+    if _, ok := models.Users[username]; !ok {
+        http.Error(w, "User not found", http.StatusNotFound)
+        return
+    }
+
+    //! Delete the user from the map
+    delete(models.Users, username)
+
+  
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte("User deleted successfully"))
 }
