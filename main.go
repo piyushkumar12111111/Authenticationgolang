@@ -33,8 +33,12 @@ func main() {
 	r.HandleFunc("/reports", handlers.GetAllReports).Methods("GET")
 
 
-	log.Println("Server starting on :8080...")
-	http.ListenAndServe(":8080", r)
+	//! serach api 
+	r.HandleFunc("/reports/search", handlers.SearchReports).Methods("GET")
+
+
+	log.Println("Server starting on :8085...")
+	http.ListenAndServe(":8085", r)
 }
 
 func ProtectedEndpoint(w http.ResponseWriter, r *http.Request) {

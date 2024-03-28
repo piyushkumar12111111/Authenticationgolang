@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
@@ -36,6 +37,8 @@ func CreateReport(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(report)
 }
+
+
 
 func GetReport(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -116,4 +119,27 @@ func GetAllReports(w http.ResponseWriter, r *http.Request) {
 	})
 
 	json.NewEncoder(w).Encode(reportsSlice)
+}
+
+
+
+//! SearchReports searches for reports based on a query parameter 'q'
+func SearchReports(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	if query == "" {
+		http.Error(w, "Query parameter 'q' is missing", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	var filteredReports []models.EmploymentReport
+	for _, report := range reports {
+		if strings.Contains(strings.ToLower(report.Content), strings.ToLower(query)) {
+			filteredReports = append(filteredReports, report)
+		}
+	}
+
+	json.NewEncoder(w).Encode(filteredReports)
 }
