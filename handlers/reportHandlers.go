@@ -3,21 +3,16 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"sync"
 
 	"github.com/gorilla/mux"
+	"github.com/google/uuid"
 	"github.com/piyushkumar/authenticationmayursir/models"
 )
 
 var (
 	mu      sync.Mutex
-	reports = map[string]models.EmploymentReport{
-		"1": {ID: "1", Content: "Annual Report 2021"},
-		"2": {ID: "2", Content: "Quarterly Diversity Report Q2"},
-		"3": {ID: "3", Content: "Employee Satisfaction Report 2022"},
-	}
-	nextID = 4 
+	reports = make(map[string]models.EmploymentReport)
 )
 
 
@@ -28,10 +23,12 @@ func CreateReport(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//! Generate a new UUID for the report ID
+	uuid := uuid.New().String()
+	report.ID = uuid
+
 	mu.Lock()
-	report.ID = strconv.Itoa(nextID) 
 	reports[report.ID] = report
-	nextID++ 
 	mu.Unlock()
 
 	w.WriteHeader(http.StatusCreated)
@@ -79,7 +76,7 @@ func UpdateReport(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	
+	// Maintain the ID of the original report
 	updatedReport.ID = report.ID
 	reports[id] = updatedReport
 	mu.Unlock()
