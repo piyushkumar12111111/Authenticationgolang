@@ -17,6 +17,7 @@ func main() {
     r.Handle("/protected", middleware.Authenticate(http.HandlerFunc(ProtectedEndpoint))).Methods("GET")
 	r.HandleFunc("/users", handlers.GetAllUsers).Methods("GET")
 	r.HandleFunc("/user/{username}", handlers.DeleteUser).Methods("DELETE")
+	r.HandleFunc("/user/{username}", handlers.UpdateUser).Methods("PUT")  //! method for updating user
 
 
     log.Println("Server starting on :8080...")

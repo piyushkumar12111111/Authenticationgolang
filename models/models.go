@@ -3,8 +3,10 @@ package models
 import "golang.org/x/crypto/bcrypt"
 
 type User struct {
-    Username string
-    Password []byte //! hashed password
+    Username string   `json:"username,omitempty"`
+
+    Password []byte   `json:"password,omitempty"`
+	//! hashed password
 }
 
 //! mock database
