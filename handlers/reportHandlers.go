@@ -53,6 +53,8 @@ func GetReport(w http.ResponseWriter, r *http.Request) {
 	mu.Unlock()
 	if !ok {
 		http.NotFound(w, r)
+
+		json.NewEncoder(w).Encode("Report not found 🔒")
 		return
 	}
 
