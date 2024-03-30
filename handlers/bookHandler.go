@@ -29,7 +29,7 @@ func Addbook(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	
+
 
 	//! Generate a new UUID for the report ID
 	uuid := uuid.New().String()
@@ -134,4 +134,21 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(bookList)
 }
 
+
+//! search books by name
+
+func SearchBooks(w http.ResponseWriter, r *http.Request) {
+	vars := r.URL.Query()
+	name := vars.Get("name")
+
+	var searchResult []models.BookList
+
+	for _, value := range bookList {
+		if value.BookName == name {
+			searchResult = append(searchResult, value)
+		}
+	}
+
+	json.NewEncoder(w).Encode(searchResult)
+}
 

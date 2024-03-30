@@ -44,7 +44,13 @@ func main() {
 	//! retriving all books
 	r.HandleFunc("/books", handlers.GetAllBooks).Methods("GET")
 
-	
+
+	//! search api
+	r.HandleFunc("/books/search", handlers.SearchBooks).Methods("GET")
+
+	//! http://localhost:8085/books/search?bookname=Employee
+
+
 
 	log.Println("Server starting on :8085...")
 	http.ListenAndServe(":8085", r)
