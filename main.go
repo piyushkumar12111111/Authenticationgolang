@@ -27,15 +27,24 @@ func main() {
 	r.HandleFunc("/reports/{id}", handlers.UpdateReport).Methods("PUT")
 	r.HandleFunc("/reports/{id}", handlers.DeleteReport).Methods("DELETE")
 
-
 	//! retriving all reports
 
 	r.HandleFunc("/reports", handlers.GetAllReports).Methods("GET")
 
-
-	//! serach api 
+	//! serach api
 	r.HandleFunc("/reports/search", handlers.SearchReports).Methods("GET")
 
+	//! library management system apis
+
+	r.HandleFunc("/addbook", handlers.Addbook).Methods("POST")
+	r.HandleFunc("/book/{id}", handlers.GetBook).Methods("GET")
+	r.HandleFunc("/book/{id}", handlers.UpdateBook).Methods("PUT")
+	r.HandleFunc("/book/{id}", handlers.DeleteBook).Methods("DELETE")
+	
+	//! retriving all books
+	r.HandleFunc("/books", handlers.GetAllBooks).Methods("GET")
+
+	
 
 	log.Println("Server starting on :8085...")
 	http.ListenAndServe(":8085", r)
