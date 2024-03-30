@@ -88,23 +88,53 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//! delete 
+//! delete
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-   
-    vars := mux.Vars(r)
-    username := vars["username"]
 
-    
-    if _, ok := models.Users[username]; !ok {
-        http.Error(w, "User not found", http.StatusNotFound)
-        return
-    }
+	vars := mux.Vars(r)
+	username := vars["username"]
 
-    //! Delete the user from the map
-    delete(models.Users, username)
+	if _, ok := models.Users[username]; !ok {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
 
-  
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("User deleted successfully"))
+	//! Delete the user from the map
+	delete(models.Users, username)
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("User deleted successfully"))
+}
+
+//! update
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+
+	//! setting header
+	w.Header().Set("Content-Type", "application/json")
+	
+
+	vars := mux.Vars(r)   //! for fetching the username from the url
+	username := vars["username"]
+
+	if _, ok := models.Users[username]; !ok {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	var creds Credentials
+	err := json.NewDecoder(r.Body).Decode(&creds)   //! data decoding 
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err = models.CreateUser(creds.Username, creds.Password)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
 }
