@@ -152,3 +152,21 @@ func SearchBooks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(searchResult)
 }
 
+//! notification handler 
+
+
+func Notify(w http.ResponseWriter, r *http.Request) {
+
+
+	//! get all users
+	mu.Lock()
+	defer mu.Unlock()
+
+	for _, value := range models.Users {
+		if value.Username == "admin" {
+			//! send notification
+			json.NewEncoder(w).Encode("Notification sent to admin")
+		}
+	}
+
+}
