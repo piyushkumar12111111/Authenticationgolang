@@ -8,6 +8,13 @@ import (
 	"github.com/piyushkumar/authenticationmayursir/middleware"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/sessions"
+)
+
+
+var (
+	// Key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	store = sessions.NewCookieStore([]byte("your-very-secure-key"))
 )
 
 func main() {
@@ -49,6 +56,13 @@ func main() {
 	r.HandleFunc("/books/search", handlers.SearchBooks).Methods("GET")
 
 	//! http://localhost:8085/books/search?bookname=Employee
+
+
+	//! session based authentication
+
+	r.HandleFunc("/sessionlogin", handlers.LoginHandler(store)).Methods("POST")
+	r.HandleFunc("/sessionlogout", handlers.LogoutHandler(store)).Methods("POST")
+    
 
 
 
